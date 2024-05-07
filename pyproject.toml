@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "inawo"
+version = "0.1.0"
+description = "expense management data project"
+authors = ["Vitor Roque <vitor.roquep@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+polars = "^0.20.23"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
