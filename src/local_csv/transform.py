@@ -4,8 +4,8 @@ import polars as pl
 
 class GroupData:
     def __init__(self, category: Dict[str, DataFrame], date: Dict[str, DataFrame]) -> None:
-        self.category = category 
-        self.date = date 
+        self.category = category
+        self.date = date
 
 def transform(dataframe: DataFrame) -> GroupData:
     """
@@ -13,11 +13,12 @@ def transform(dataframe: DataFrame) -> GroupData:
     composed by:
         groups followed by total and mean amount:
             - category
-            - date 
+            - date
 
     """
     category_group = {
-            'total': dataframe.group_by('category').agg(pl.col('amount').sum()),
+            'total': dataframe.group_by('category')
+                            .agg(pl.col('amount').sum()),
             'mean': dataframe.group_by('category').agg(pl.col('amount').mean())
     }
 

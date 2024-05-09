@@ -6,6 +6,7 @@ from local_csv.transform import transform
 def main():
     dirname = os.path.dirname(__file__)
     path = os.path.join(dirname, '../fixtures/inawo.csv')
+
     dataframe = extract(path)
     transformed = transform(dataframe)
 
