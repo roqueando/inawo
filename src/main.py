@@ -53,5 +53,6 @@ def main():
     print("="*40)
     print()
     print_by_date(transformed)
+    # load into a DW like duckDB
 
 main()
