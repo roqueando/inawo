@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 polars = "^0.20.23"
+pytest = "^8.2.0"
 
 
 [build-system]

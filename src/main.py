@@ -1,7 +1,46 @@
 import os
 from local_csv.extract import extract
 from local_csv.transform import transform
+from polars import Series, DataFrame
 
+
+def format_currency(value: Series) -> str:
+    formatted_value = value['amount'][0] / 100
+    return f'R$ {formatted_value}'
+
+def print_by_date(dataframe: DataFrame):
+    column = 'date'
+    print("Total gasto por data:")
+    print("="*40)
+
+    for key, value in getattr(dataframe, column).data['total'].items():
+        currency = format_currency(value)
+        print(f"{key}: {currency}")
+
+    print()
+    print("Média gasta por data:")
+    print("="*40)
+    for key, value in getattr(dataframe, column).data['mean'].items():
+        currency = format_currency(value)
+        print(f"{key}: {currency}")
+
+def print_by_category(dataframe: DataFrame):
+    column = 'category'
+    print("Total gasto por categoria:")
+    print("="*40)
+
+    for key, value in getattr(dataframe, column).data['total'].items():
+        translated = getattr(dataframe, column).translate(key)
+        currency = format_currency(value)
+        print(f"{translated}: {currency}")
+
+    print()
+    print("Média gasta por categoria:")
+    print("="*40)
+    for key, value in getattr(dataframe, column).data['mean'].items():
+        translated = getattr(dataframe, column).translate(key)
+        currency = format_currency(value)
+        print(f"{translated}: {currency}")
 
 def main():
     dirname = os.path.dirname(__file__)
@@ -10,25 +49,9 @@ def main():
     dataframe = extract(path)
     transformed = transform(dataframe)
 
-    categories_total = transformed.category['total']
-    category_list = categories_total['category'].to_list()
-    amount_list = categories_total['amount'].to_list()
-
-    categories_mean = transformed.category['mean']
-    category_mean_list = categories_mean['category'].to_list()
-    amount_mean_list = categories_mean['amount'].to_list()
-
-    print("Total gasto por categoria: \n")
-    for i in range(0, len(category_list)):
-        category = category_list[i]
-        amount = amount_list[i] / 100
-        print(f'{category}: R$ {amount}')
-
-    print("\n")
-    print("Média gasta por categoria: \n")
-    for i in range(0, len(category_mean_list)):
-        category = category_mean_list[i]
-        amount = amount_mean_list[i] / 100
-        print(f'{category}: R$ {amount}')
+    print_by_category(transformed)
+    print("="*40)
+    print()
+    print_by_date(transformed)
 
 main()
